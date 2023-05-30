@@ -1,0 +1,73 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    async (1.31.0)
+      console (~> 1.10)
+      nio4r (~> 2.3)
+      timers (~> 4.1)
+    concurrent-ruby (1.2.2)
+    console (1.16.2)
+      fiber-local
+    dry-core (1.0.0)
+      concurrent-ruby (~> 1.0)
+      zeitwerk (~> 2.6)
+    dry-inflector (1.0.0)
+    dry-logic (1.5.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0, < 2)
+      zeitwerk (~> 2.6)
+    dry-struct (1.6.0)
+      dry-core (~> 1.0, < 2)
+      dry-types (>= 1.7, < 2)
+      ice_nine (~> 0.11)
+      zeitwerk (~> 2.6)
+    dry-types (1.7.1)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 1.0)
+      dry-inflector (~> 1.0)
+      dry-logic (~> 1.4)
+      zeitwerk (~> 2.6)
+    faraday (2.7.5)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
+    faraday-net_http (3.0.2)
+    fiber-local (1.0.0)
+    ice_nine (0.11.2)
+    multipart-post (2.3.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
+    nio4r (2.5.9)
+    rack (2.2.7)
+    rack-protection (3.0.6)
+      rack
+    ruby2_keywords (0.0.5)
+    sequel (5.68.0)
+    sinatra (3.0.6)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.6)
+      tilt (~> 2.0)
+    sqlite3 (1.6.3-x86_64-linux)
+    telegram-bot-ruby (1.0.0)
+      dry-struct (~> 1.6)
+      faraday (~> 2.0)
+      faraday-multipart (~> 1.0)
+      zeitwerk (~> 2.6)
+    tilt (2.1.0)
+    timers (4.3.5)
+    zeitwerk (2.6.8)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  async (~> 1.22)
+  sequel (~> 5.68)
+  sinatra
+  sqlite3
+  telegram-bot-ruby (~> 1.0)
+
+BUNDLED WITH
+   2.4.13
