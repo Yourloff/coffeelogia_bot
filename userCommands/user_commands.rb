@@ -151,7 +151,7 @@ module UserCommands
                     "🤩 #{barista_code[:code]}"
                     )
 
-                    bot.api.send_message(chat_id: barista_code[:user_telegram_id], text: "Сегодня у клиента День рождения #{user[:name]} #{user[:phone]} предоставляется скидка 30%. Код - #{barista_code[:code]}")
+                    bot.api.send_message(chat_id: barista_code[:user_telegram_id], text: "Сегодня у клиента День рождения #{user[:name]}, #{user[:phone]} предоставляется скидка 30%. Код - #{barista_code[:code]}")
                   elsif temp_count == DISCOUNT
                     # отметить код как бонусный
                     DB[:daily_codes].where(code: barista_code[:code]).update(bonus?: true)
@@ -168,6 +168,7 @@ module UserCommands
                     "Приходите еще, как всегда рады Вас видеть ❤ \n\n" \
                     "#{temp_count} / #{DISCOUNT}. Еще #{remains} кофе до получения скидки в 30%!"
                     )
+                    bot.api.send_message(chat_id: barista_code[:user_telegram_id], text: "Клиент: #{user[:name]}, #{user[:phone]} ввёл код - #{barista_code[:code]}")
                   end
 
                   # добавить клиента, кто активировал код
