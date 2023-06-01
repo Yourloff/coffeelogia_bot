@@ -15,13 +15,14 @@ Telegram::Bot::Client.run(ENV['TOKEN']) do |bot|
   bot.listen do |message|
     if admin?(message)
       show_commands_menu(bot, message)
-
       case message.text
       when '/start'
         handle_start_command(bot, message)
         show_commands_menu(bot, message)
       when 'Сгенерировать код'
           handle_admin_generate_code(bot, message)
+      when 'Сделать пост'
+        handle_admin_post_command(bot, message)
       when 'Проверить код'
         handle_admin_check_code(bot, message)
       when '/enter_code'

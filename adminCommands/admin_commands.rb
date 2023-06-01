@@ -15,6 +15,9 @@ module AdminCommands
         { text: 'Сгенерировать код' },
         { text: 'Проверить код' }
       ],
+      [
+        { text: 'Сделать пост' }
+      ]
     # Добавьте остальные кнопки команд, если нужно
     ]
 
@@ -62,6 +65,8 @@ module AdminCommands
             else
               status = existing_code[:activate?] ? 'АКТИВИРОВАН' : 'НЕАКТИВИРОВАН'
               bot.api.send_message(chat_id: message.chat.id, text: "Код найден, статус: #{status}")
+              status_bonus = existing_code[:bonus?] ? 'БОНУСНЫЙ код' : 'Код не бонусный'
+              bot.api.send_message(chat_id: message.chat.id, text: status_bonus)
             end
             break
           end
@@ -69,6 +74,48 @@ module AdminCommands
       end
       response.wait
     end
+  end
+
+  def handle_admin_post_command(bot, message)
+    # Проверяем, что отправитель является администратором
+    return unless admin?(message)
+
+    # Создаем инлайн-клавиатуру с кнопками "Сделать пост" и "Отмена"
+    buttons = [
+      [
+        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Сделать пост', callback_data: 'make_post'),
+        Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Отмена', callback_data: 'cancel_post')
+      ]
+    ]
+    keyboard = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: buttons)
+
+    # Отправляем сообщение с клавиатурой "Сделать пост" и "Отмена"
+    bot.api.send_message(chat_id: message.chat.id, text: 'Нажмите кнопку "Сделать пост" для отправки сообщения всем пользователям.', reply_markup: keyboard)
+
+    # Ожидаем ответ админа
+    bot.listen do |incoming_message|
+      if incoming_message.is_a?(Telegram::Bot::Types::CallbackQuery)
+        case incoming_message.data
+        when 'make_post'
+          # Админ нажал кнопку "Сделать пост"
+          bot.api.send_message(chat_id: message.chat.id, text: 'Введите сообщение для отправки всем пользователям:')
+          # Ожидаем ответ админа с сообщением
+          bot.listen do |post_message|
+            if post_message.is_a?(Telegram::Bot::Types::Message)
+              # Админ ввел сообщение, разослать его всем пользователям
+              send_message_to_all_users(bot, post_message.text)
+              bot.api.send_message(chat_id: message.chat.id, text: 'Сообщение отправлено всем пользователям.')
+              break
+            end
+          end
+        when 'cancel_post'
+          # Админ нажал кнопку "Отмена"
+          bot.api.send_message(chat_id: message.chat.id, text: 'Отправка сообщения всем пользователям отменена.')
+          break
+        end
+      end
+    end
+    show_commands_menu(bot, message)
   end
 
   private
@@ -79,4 +126,12 @@ module AdminCommands
     numbers = (0..9).to_a
     "#{letters.sample(2).join}#{numbers.sample(3).join}"
   end
+
+def send_message_to_all_users(bot, message)
+  all_users = DB[:users].all
+
+  all_users.each do |user|
+    bot.api.send_message(chat_id: user[:telegram_id], text: message)
+  end
+end
 end
