@@ -8,6 +8,7 @@ GEM
     concurrent-ruby (1.2.2)
     console (1.16.2)
       fiber-local
+    dotenv (2.8.1)
     dry-core (1.0.0)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
@@ -64,6 +65,7 @@ PLATFORMS
 
 DEPENDENCIES
   async (~> 1.22)
+  dotenv
   sequel (~> 5.68)
   sinatra
   sqlite3

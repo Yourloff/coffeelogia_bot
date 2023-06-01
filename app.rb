@@ -1,5 +1,8 @@
 require 'sinatra'
 require 'telegram/bot'
+require 'dotenv'
+
+Dotenv.load
 
 require_relative 'db/database'
 require_relative 'userCommands/user_commands'
@@ -8,7 +11,7 @@ require_relative 'adminCommands/admin_commands'
 include UserCommands
 include AdminCommands
 
-Telegram::Bot::Client.run('6066172645:AAFkCoaTWFBpw3xqpobwG2wg_p1Q0XgB4GU') do |bot|
+Telegram::Bot::Client.run(ENV['TOKEN']) do |bot|
   bot.listen do |message|
     if admin?(message)
       show_commands_menu(bot, message)
